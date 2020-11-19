@@ -1,0 +1,69 @@
+// main page layout-------------------------
+
+body {
+  background-color: rgb(17, 18, 23);
+}
+
+.page-container {
+}
+
+// main page layout--------------------------
+
+//left sidebar ------------------------------
+
+.left-sidebar-wrapper {
+  min-height: 80vh;
+  background-color: rgb(39, 40, 48);
+  padding: 0 !important;
+}
+
+.sidebar-heading {
+  font-size: 26px;
+  width: 100%;
+}
+
+.left-sidebar-wrapper a {
+  background-color: rgb(39, 40, 48);
+  color: white;
+}
+
+// end of left sidebar--------------------------------
+
+// dynamic container----------------------------------
+
+.page-content-wrapper {
+  background-color: rgb(241, 241, 241);
+}
+
+// end of dynamic container---------------------------
+
+// right sidebar--------------------------------------
+
+.right-sidebar-wrapper {
+  background-color:  rgb(39, 40, 48);
+  color: white;
+  min-height: 80vh;
+}
+
+.first-row-user-buttons {
+  min-height: 15%;
+}
+
+// end of right sidebar-------------------------------
+
+// footer---------------------------------------------
+
+footer {
+  min-height: 20vh;
+  background-color: rgb(197, 195, 195);
+}
+
+// end of footer--------------------------------------
+
+
+//----  Put in new scss file ---------------
+
+// (posts view) pagination fix
+.pagination {
+  justify-content: center;
+}
