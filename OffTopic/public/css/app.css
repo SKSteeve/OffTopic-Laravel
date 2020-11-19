@@ -10903,3 +10903,57 @@ a.text-dark:focus {
   }
 }
 
+body {
+  background-color: #111217;
+}
+
+.left-sidebar-wrapper {
+  min-height: 80vh;
+  background-color: #272830;
+  padding: 0 !important;
+}
+
+.sidebar-heading {
+  font-size: 26px;
+  width: 100%;
+}
+
+.left-sidebar-wrapper a {
+  background-color: #272830;
+  color: white;
+}
+
+.page-content-wrapper {
+  background-color: #f1f1f1;
+}
+
+.right-sidebar-wrapper {
+  background-color: #272830;
+  color: white;
+  min-height: 80vh;
+}
+
+.first-row-user-buttons {
+  min-height: 15%;
+}
+
+footer {
+  min-height: 20vh;
+  background-color: #c5c3c3;
+}
+
+.pagination {
+  justify-content: center;
+}
+
+.slider-container {
+  background-color: black;
+  width: 700px;
+  color: black;
+}
+
+.slider-img {
+  height: 400px;
+  opacity: 0.6;
+}
+
