@@ -1,7 +1,7 @@
 <div class="right-sidebar-wrapper col-3 px-0 m-0">
     <div class="first-row-user-buttons row  p-0 m-0 border-bottom">
         @guest
-            <div class="col d-flex align-items-center justify-content-around p-0 m-0">
+            <div class="col d-flex align-items-center justify-content-around">
                 <a href="{{ route('login') }}" class="btn btn-light">Login</a>
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}" class="btn btn-light">Register</a>
