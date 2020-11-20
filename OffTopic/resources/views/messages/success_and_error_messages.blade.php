@@ -1,4 +1,4 @@
-<div class="messages-create my-4 mx-4">
+<div class="messages-create my-4 mx-4 messages-success-error">
     @if(count($errors) > 0)
         @foreach($errors->all() as $error)
              <div class="alert alert-danger">{{ $error }}</div>
