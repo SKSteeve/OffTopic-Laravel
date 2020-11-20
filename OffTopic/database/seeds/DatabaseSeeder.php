@@ -11,6 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserSeeder::class);
+        // use this command -> php artisan migrate:fresh --seed
+
+        $this->call(UsersSeeder::class);
+        $this->call(PostsSeeder::class);
+        $this->call(PostsCommentsSeeder::class);
+        $this->call(RolesSeeder::class);
+        $this->call(RoleUserSeeder::class);
     }
 }
