@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('scripts')
-    <script src="{{ asset('js/index.js') }}"></script>
-@endpush
-
 @section('content')
     <div class="px-5">
         <h1 class="mt-3 text-center">Welcome To OffTopic</h1>
