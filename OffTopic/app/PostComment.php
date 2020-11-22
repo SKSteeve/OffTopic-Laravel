@@ -9,6 +9,11 @@ class PostComment extends Model
     protected $table = 'posts_comments';
     protected $guarded = ['id'];
 
+    public function getRegisteredAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
     public function post() {
         return $this->belongsTo('App\Post', 'post_id');
     }
