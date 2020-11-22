@@ -52,6 +52,10 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        if(Gate::denies('create-post')) {
+            return redirect('/blog')->with('error', 'Access denied!');
+        }
+
         $validateResponse = PostsService::validate($request->all());
 
         if($validateResponse['status'] == -1) {
@@ -74,7 +78,10 @@ class PostsController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        $comments = Post::find($id)->comments()->orderBy('created_at', 'desc')->paginate(2);
+        $comments = $post->comments()
+            ->with('user')
+            ->latest()
+            ->paginate(5);
 
         return view('blog_views.post')->with(['post' => $post, 'comments' => $comments]);
     }
@@ -105,6 +112,10 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(Gate::denies('edit-post')) {
+            return redirect("/blog/$id")->with('error', 'Access denied!');
+        }
+
         $validateResponse = PostsService::validate($request->all());
 
         if($validateResponse['status'] == -1) {
@@ -128,8 +139,9 @@ class PostsController extends Controller
             return redirect("/blog/$id")->with('error', 'Access denied!');
         }
 
-        Post::find($id)->comments()->delete();
-        Post::find($id)->delete();
+        $post = Post::find($id);
+        $post->comments()->delete();
+        $post->delete();
 
         return redirect('/blog')->with('success', 'The Post was Deleted');
     }
