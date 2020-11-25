@@ -16,7 +16,7 @@
 
 
                 <label for="body">Text</label><br />
-                <textarea name="body" id="body" style="min-width: 100%" rows="10">{{ @$post->body }}{{ @$formData['body'] }}</textarea><br>
+                <textarea class="text-editor" name="body" id="body" style="min-width: 100%" rows="10">{{ @$post->body }}{{ @$formData['body'] }}</textarea><br>
 
 
                 <div class="row float-right mx-0 my-3">
