@@ -119,6 +119,14 @@ $(document).ready(function () {
                 collapseCommentForm.addClass('collapse');
 
                 changeModeEditOrCreate($('.edit-mode-btn'));
+
+                setTimeout(function(){
+                    let messageContainer = $('.messages-success-error');
+
+                    if (messageContainer.length > 0) {
+                        messageContainer.remove();
+                    }
+                }, 5000)
             }
         }
 
