@@ -14,6 +14,9 @@
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{ asset('js/messages-remover.js') }}"></script>
 
+    <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('js/add-text-editor.js') }}"></script>
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
