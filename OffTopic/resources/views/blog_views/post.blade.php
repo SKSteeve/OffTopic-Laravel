@@ -24,7 +24,7 @@
         <small>published: {{$post->created_at}}</small>
 
         <div class="post-content my-4">
-            <p>{{$post->body}}</p>
+            <p>{!! $post->body !!}</p>
         </div>
 
         <hr class="mb-5">
