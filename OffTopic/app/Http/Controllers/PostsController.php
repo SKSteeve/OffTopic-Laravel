@@ -116,7 +116,7 @@ class PostsController extends Controller
             return redirect("/blog/$id")->with('error', 'Access denied!');
         }
 
-        $validateResponse = PostsService::validate($request->all());
+        $validateResponse = PostsService::validatePostFields($request->all());
 
         if($validateResponse['status'] == -1) {
             $errors = $validateResponse['errors'];
