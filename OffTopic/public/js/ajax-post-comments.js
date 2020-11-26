@@ -104,21 +104,33 @@ $(document).ready(function () {
 
             function update(data) {
 
-                let editButton = $(`[value=${data.commentData.id}]`);
-                let commentForEditSection = editButton.parent().parent();
-                let commentBodyForEdit = commentForEditSection.find("p");
-                commentBodyForEdit.text(data.commentData.body);
+                if(data.errors) {
+                    console.log("errors");
+                    let errors = data.errors.body;
+                    for(let i = 0; i < errors.length; i++) {
+                        let errorElement = $('<div>');
+                        errorElement.text(errors[i]);
+                        errorElement.addClass('messages-success-error alert alert-danger');
+                        commentEditMessageSection.append(errorElement);
+                    }
+                } else {
+                    console.log("success");
+                    let editButton = $(`[value=${data.commentData.id}]`);
+                    let commentForEditSection = editButton.parent().parent();
+                    let commentBodyForEdit = commentForEditSection.find("p");
+                    commentBodyForEdit.text(data.commentData.body);
 
-                let messageElement = $('<div>');
-                messageElement.text(data.success);
-                messageElement.addClass('messages-success-error alert alert-success');
+                    let messageElement = $('<div>');
+                    messageElement.text(data.success);
+                    messageElement.addClass('messages-success-error alert alert-success');
 
-                commentEditMessageSection.append(messageElement);
+                    commentEditMessageSection.append(messageElement);
 
-                collapseCommentForm.removeClass('show');
-                collapseCommentForm.addClass('collapse');
+                    collapseCommentForm.removeClass('show');
+                    collapseCommentForm.addClass('collapse');
 
-                changeModeEditOrCreate($('.edit-mode-btn'));
+                    changeModeEditOrCreate($('.edit-mode-btn'));
+                }
 
                 setTimeout(function(){
                     let messageContainer = $('.messages-success-error');
@@ -126,7 +138,7 @@ $(document).ready(function () {
                     if (messageContainer.length > 0) {
                         messageContainer.remove();
                     }
-                }, 5000)
+                }, 10000)
             }
         }
 
