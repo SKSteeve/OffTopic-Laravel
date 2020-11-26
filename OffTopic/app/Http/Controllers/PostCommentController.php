@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Services\PostsService;
 use Illuminate\Http\Request;
 use App\PostComment;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,17 @@ class PostCommentController extends Controller
     public function store(Request $request, $id)
     {
         if (Auth::check()) {
+            $validateResponse = PostsService::validateCommentFields($request->all());
+
+            if($validateResponse['status'] == -1) {
+                $errors = $validateResponse['errors'];
+                $variables = [
+                  'errors' => $errors,
+                  'body' => $request->input('body'),
+                ];
+                return redirect()->route("blog", [$id])->with($variables);
+            }
+
             $comment = new PostComment();
             $comment->body = $request->input('body');
             $comment->user_id = Auth::id();
