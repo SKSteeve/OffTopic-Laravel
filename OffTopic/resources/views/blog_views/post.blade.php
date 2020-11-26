@@ -69,7 +69,7 @@
 
                         <label for="comment" class="m-0">Comment</label>
                         <div class="edit-mode-text text-success">You are about to create new comment!</div>
-                        <textarea name="body" class="comment-body-for-submit" style="min-width: 100%" rows="5" ></textarea>
+                        <textarea name="body" class="comment-body-for-submit" style="min-width: 100%" rows="5" >{{session('body')}}</textarea>
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary my-1 comment-form-submit-btn">Post Comment</button>
                         </div>
