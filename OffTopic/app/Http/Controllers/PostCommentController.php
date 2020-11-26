@@ -65,6 +65,14 @@ class PostCommentController extends Controller
         $comment = PostComment::find($commentId);
 
         if(Gate::allows('delete-edit-comments') || Auth::id() == $comment->user_id) {
+
+            $validateResponse = PostsService::validateCommentFields($request->all());
+
+            if($validateResponse['status'] == -1) {
+                $errors = $validateResponse['errors'];
+                return response()->json(['errors' => $errors]);
+            }
+
             $comment->update($data);
             return response()->json(['commentData' => $data, 'success' => 'Comment Updated!']);
         }
