@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('scripts')
-{{--    <script src="{{ asset('js/ajax-posts.js') }}"></script>--}}
-@endpush
-
 @section('content')
     <div class="px-5">
         <div class="row m-0 my-5">
@@ -33,7 +29,7 @@
                 {{$posts->links()}}
 
             @else
-                <p>No posts found</p>
+                <p class="text-center bg-dark text-white">There are no posts yet.</p>
             @endif
 
         </div>

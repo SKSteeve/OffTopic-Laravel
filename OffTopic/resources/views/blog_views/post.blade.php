@@ -30,29 +30,33 @@
         <hr class="mb-5">
 
         <div class="comments">
-            @foreach($comments as $comment)
-                <div class="post-comment px-5 pt-4 pb-2 mb-4 bg-light text-dark">
-                    <h5 class="m-0 d-inline-block">{{ $comment->user->name }}</h5>
-                    @auth
-                        @if(Auth::user()->can('delete-edit-comments') || Auth::id() == $comment->user_id)
-                            <div class="buttons float-right">
-                                <a class="btn btn-danger" onclick="document.getElementById('delete-comment').submit();">Delete</a>
-                                <button value="{{ $comment->id }}" class="btn btn-warning edit-comment">Edit</button>
-                                <form id="delete-comment" action="{{ url('/blog', $post->id) }}/comment/{{ $comment->id }}/delete" method="POST" class="d-none">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                            </div>
+            @if(count($comments) < 1)
+                <p class="text-center bg-dark text-white">There are no comments for this post yet.</p>
+            @else
+                @foreach($comments as $comment)
+                    <div class="post-comment px-5 pt-4 pb-2 mb-4 bg-light text-dark">
+                        <h5 class="m-0 d-inline-block">{{ $comment->user->name }}</h5>
+                        @auth
+                            @if(Auth::user()->can('delete-edit-comments') || Auth::id() == $comment->user_id)
+                                <div class="buttons float-right">
+                                    <a class="btn btn-danger" onclick="document.getElementById('delete-comment').submit();">Delete</a>
+                                    <button value="{{ $comment->id }}" class="btn btn-warning edit-comment">Edit</button>
+                                    <form id="delete-comment" action="{{ url('/blog', $post->id) }}/comment/{{ $comment->id }}/delete" method="POST" class="d-none">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </div>
 
-                        @endif
-                    @endauth
-                    <br>
-                    <small>published: {{ $comment->registered }}</small>
-                    <div class="post-comment-content mt-3 pb-0">
-                        <p>{{ $comment->body }}</p>
+                            @endif
+                        @endauth
+                        <br>
+                        <small>published: {{ $comment->registered }}</small>
+                        <div class="post-comment-content mt-3 pb-0">
+                            <p>{{ $comment->body }}</p>
+                        </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            @endif
 
             @auth
                 <div class="create-editmode-comment-btn-section clearfix mx-5 mb-3">
