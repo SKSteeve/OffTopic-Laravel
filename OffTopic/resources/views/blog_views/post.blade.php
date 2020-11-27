@@ -18,7 +18,7 @@
                 </form>
             @endcan
             @can('edit-post')
-                <button class="btn btn-warning float-right mr-1"><a class="text-decoration-none text-white" href="{{ url('/blog',$post->id) }}/edit">Edit</a></button>
+                <a class="btn btn-warning float-right mr-1 text-decoration-none text-white" href="{{ url('/blog',$post->id) }}/edit"><span>Edit</span></a>
             @endcan
         </div>
         <small>published: {{$post->created_at}}</small>

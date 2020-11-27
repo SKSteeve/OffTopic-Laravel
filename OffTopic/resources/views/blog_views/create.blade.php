@@ -22,7 +22,7 @@
 
 
                 <div class="row float-right mx-0 my-3">
-                    <button class="btn btn-dark"><a href="{{ url('/blog') }}">Cancel</a></button>
+                    <a class="btn btn-dark text-decoration-none text-white" href="{{ url('/blog') }}"><span>Cancel</span></a>
                     <button type="submit" class="btn btn-primary ml-2">Create</button>
                 </div>
             </form>
