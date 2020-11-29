@@ -12,6 +12,9 @@ use Gate;
 class PostCommentController extends Controller
 {
 
+    /**
+     * PostCommentController constructor.
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -21,8 +24,9 @@ class PostCommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request, $id)
     {
@@ -52,11 +56,11 @@ class PostCommentController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage
+     * and return json for fail or success.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(Request $request)
     {
@@ -81,6 +85,12 @@ class PostCommentController extends Controller
     }
 
 
+    /**
+     * Return json for the specified resource we want to edit.
+     *
+     * @param $commentId
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function edit($commentId)
     {
         $commentBody = PostComment::find($commentId)->body;
@@ -91,7 +101,8 @@ class PostCommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $postId
+     * @param int $commentId
      * @return \Illuminate\Http\Response
      */
     public function destroy($postId, $commentId)

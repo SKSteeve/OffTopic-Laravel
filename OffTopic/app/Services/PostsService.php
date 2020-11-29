@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Validator;
 
 class PostsService
 {
+    /**
+     * Validate before creating or updating post
+     *
+     * @param $fields
+     * @return array
+     */
     public static function validatePostFields($fields)
     {
         $validator = Validator::make($fields, Post::$rules, Post::$messages);
@@ -24,6 +30,12 @@ class PostsService
         ];
     }
 
+    /**
+     * Validate before creating or updating comment
+     *
+     * @param $fields
+     * @return array
+     */
     public static function validateCommentFields($fields)
     {
         $validator = Validator::make($fields, PostComment::$rules, PostComment::$messages);
