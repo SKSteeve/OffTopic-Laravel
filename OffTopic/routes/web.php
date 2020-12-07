@@ -35,3 +35,10 @@ Route::delete('/blog/{postId}/comment/{commentId}/delete', 'PostCommentControlle
 // AJAX for comment edit & update
 Route::get('/comment/{id}/edit', 'PostCommentController@edit');
 Route::put('/comment/update', 'PostCommentController@update');
+
+// User Profile Controller
+Route::get('/users/profile', 'UserProfileController@index'); //show little form to type id or name and get redirected to specific user profile
+Route::get('/users/profile/{id}', 'UserProfileController@show');
+Route::get('/users/profile/{id}/edit', 'UserProfileController@edit');
+Route::post('/users/profile/{id}/update', 'UserProfileController@createOrUpdate');
+Route::delete('/users/profile/{id}/delete', 'UserProfileController@destroy');
