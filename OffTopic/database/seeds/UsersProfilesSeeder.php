@@ -21,6 +21,7 @@ class UsersProfilesSeeder extends Seeder
             'gender' => 'male',
             'birthday' => now()->toDateString(),
             'country' => 'Bulgaria',
+            'profile_picture' => 'noimage.jpg',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -35,6 +36,7 @@ class UsersProfilesSeeder extends Seeder
             'gender' => 'male',
             'birthday' => now()->toDateString(),
             'country' => 'Bulgaria',
+            'profile_picture' => 'noimage.jpg',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -49,6 +51,7 @@ class UsersProfilesSeeder extends Seeder
             'gender' => 'male',
             'birthday' => now()->toDateString(),
             'country' => 'Bulgaria',
+            'profile_picture' => 'noimage.jpg',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -62,6 +65,7 @@ class UsersProfilesSeeder extends Seeder
             'gender' => 'male',
             'birthday' => now()->toDateString(),
             'country' => 'Turkey',
+            'profile_picture' => 'noimage.jpg',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -75,6 +79,7 @@ class UsersProfilesSeeder extends Seeder
             'gender' => 'male',
             'birthday' => now()->toDateString(),
             'country' => 'Bulgaria',
+            'profile_picture' => 'noimage.jpg',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
