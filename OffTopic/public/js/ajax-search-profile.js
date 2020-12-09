@@ -51,19 +51,6 @@ $(document).ready(function () {
                 }
                 table.append(tr);
             }
-            //--------------------------------
-            return;
-            // for (let u = 0; u < users.length; u++) {
-            //
-            //
-            //
-            //         let td = $('<td>');
-            //         td.text(user[item]);
-            //         tr.append(td);
-            //     }
-            //     table.append(tr);
-            // }
-
         }
 
         function errorReturned(error) {
