@@ -3,7 +3,7 @@
 @section('content')
     <div class="px-5">
         <h1 class="mt-3 text-center">Welcome To OffTopic</h1>
-        <p class="mt-4">Welcome to my forum and blog site. I created this app for fun and afcourse to learn new things. Here you can read my blogs, ask your questions in the forum and to discuss topics with other users.Feel free to contact me for bussines offers or if you have any other questions.
+        <p class="mt-4">Welcome to my forum and blog site. I created this app for fun and of course to learn new things. Here you can read my blog posts, ask your questions in the forum and to discuss topics with other users.Feel free to contact me for business offers or if you have any other questions.
         </p>
         <div class="slider-container mx-auto container my-5">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
