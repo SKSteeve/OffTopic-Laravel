@@ -42,3 +42,8 @@ Route::get('/users/profile/{id}', 'UserProfileController@show');
 Route::get('/users/profile/{id}/edit', 'UserProfileController@edit');
 Route::post('/users/profile/{id}/update', 'UserProfileController@createOrUpdate');
 Route::delete('/users/profile/{id}/delete', 'UserProfileController@destroy');
+
+// Friend Requests Controller
+//  AJAX for create and delete
+Route::get('/friend-request/{id}/create', 'FriendRequestsController@store');
+Route::get('/friend-request/{id}/delete', 'FriendRequestsController@destroy');
