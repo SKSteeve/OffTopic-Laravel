@@ -49,6 +49,10 @@ class User extends Authenticatable
         return $this->hasMany('App\FriendRequests', 'requested_user_id');
     }
 
+    public function notifications() {
+        return $this->hasMany('App\Notification', 'user_id');
+    }
+
     public function roles() {
         return $this->belongsToMany('App\Role', 'role_user');
     }
