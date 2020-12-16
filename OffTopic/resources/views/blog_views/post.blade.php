@@ -39,9 +39,9 @@
                         @auth
                             @if(Auth::user()->can('delete-edit-comments') || Auth::id() == $comment->user_id)
                                 <div class="buttons float-right">
-                                    <a class="btn btn-danger" onclick="document.getElementById('delete-comment').submit();">Delete</a>
+                                    <a class="btn btn-danger" onclick="document.getElementById('delete-comment-{{ $comment->id }}').submit();">Delete</a>
                                     <button value="{{ $comment->id }}" class="btn btn-warning edit-comment">Edit</button>
-                                    <form id="delete-comment" action="{{ url('/blog', $post->id) }}/comment/{{ $comment->id }}/delete" method="POST" class="d-none">
+                                    <form id="delete-comment-{{ $comment->id }}" action="{{ url('/blog', $post->id) }}/comment/{{ $comment->id }}/delete" method="POST" class="d-none">
                                         @csrf
                                         @method('DELETE')
                                     </form>
