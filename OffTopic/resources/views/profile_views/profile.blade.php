@@ -1,9 +1,17 @@
 @extends('layouts.app')
 
+@push('scripts')
+    <script src="{{ asset('js/ajax-profile-friendship-button.js') }}"></script>
+@endpush
+
 @section('content')
-    <div class="px-5 mt-5 mb-4">
+    <div class="profile px-5 mt-5 mb-4">
+
         <div class="m-0 mt-5 mb-0">
             <h2 class="mb-5 d-inline-block">{{ $user->name }}'s Profile</h2>
+            @if(Auth::id() != $id)
+                <button value="{{ $friendshipBtnValue }}" class="friendship-button btn {{ $friendshipBtnClass }} float-right ml-1">{{ $friendshipBtnText }}</button>
+            @endif
             @if(Auth::user()->can('edit-user-profile') || Auth::id() == $id)
                 <a href="{{ url('/users/profile',$user->id) }}/edit" class="btn btn-warning float-right text-decoration-none text-white">Edit</a>
             @endif
@@ -14,6 +22,9 @@
                     @method('DELETE')
                 </form>
             @endcan
+            @if(Auth::id() == $id)
+                <a href="{{ url('/users', $id) }}/notifications" class="btn btn-secondary float-right mr-1">Notifications <span class="notifications-badge badge bg-success">{{ $notificationsCount }}</span></a>
+            @endif
         </div>
         <div class="profile_info mx-3">
             <div class="row mb-5">
@@ -33,7 +44,8 @@
                 <div class="col-6 mb-3"><strong>Phone Number: </strong>{{ @$profileInfo->tel_number }}</div>
             </div>
         </div>
-
+        <input type="hidden" value="{{url('/')}}" id="url" name="url">
+        <input type="hidden" value="{{ $id }}" id="user-id" name="user-id">
     </div>
 
 @endsection
