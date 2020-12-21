@@ -12,7 +12,6 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{asset('js/jquery.js')}}"></script>
-    <script src="{{ asset('js/messages-remover.js') }}"></script>
 
     <script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('js/add-text-editor.js') }}"></script>
@@ -28,14 +27,19 @@
     <!-- Custom Script load for current view -->
     @stack('scripts')
 
+    <!-- Script for right sidebar - friends. Adding Event on buttons Unfriend when the page is refreshed or added new friends with ajax -->
+    <script src="{{ asset('js/ajax-right-sidebar.js') }}"></script>
+
+    <!-- Script removing messages after they are displayed with ajax or refreshed-->
+    <script src="{{ asset('js/messages-remover.js') }}"></script>
 </head>
 <body>
 <div class="page-container mx-auto container-fluid">
-    <div class="page-without-footer row">
 
+    <div class="page-without-footer row">
         <!-- Left Sidebar -->
-    @include('main_layout_components.left-sidebar')
-    <!--// Left Sidebar -->
+        @include('main_layout_components.left-sidebar')
+        <!--// Left Sidebar -->
 
         <!-- Main Dynamic Content -->
         <main class="page-content-wrapper col-8">
@@ -47,14 +51,13 @@
         <!--// Main Dynamic Content -->
 
         <!-- Right Sidebar -->
-    @include('main_layout_components.right-sidebar')
-    <!--// Right Sidebar -->
-
+        @include('main_layout_components.right-sidebar')
+        <!--// Right Sidebar -->
     </div>
 
     <!-- footer here -->
-@include('main_layout_components.footer')
-<!-- // footer here -->
+    @include('main_layout_components.footer')
+    <!-- // footer here -->
 </div>
 </body>
 </html>
