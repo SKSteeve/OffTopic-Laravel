@@ -35,7 +35,23 @@ class UserProfileController extends Controller
             $user = User::findOrFail($id);
             $profileInfo = $user->profile;
 
-            return view('profile_views.profile')->with(['id' => $id, 'user' => $user, 'profileInfo' => $profileInfo]);
+            if(FriendListController::checkIfFriends($id)) {
+                $friendshipButtonText = 'Unfriend';
+                $friendshipButtonValue = 'deleteFriend';
+                $friendshipButtonClass = 'btn-danger';
+            } else {
+                if(FriendRequestsController::checkIfRequestExist($id, Auth::id())) {
+                    $friendshipButtonText = 'Requested';
+                    $friendshipButtonValue = 'deleteRequest';
+                    $friendshipButtonClass = 'btn-secondary';
+                } else {
+                    $friendshipButtonText = 'Send Friend Request';
+                    $friendshipButtonValue = 'createRequest';
+                    $friendshipButtonClass = 'btn-primary';
+                }
+            }
+
+            return view('profile_views.profile')->with(['id' => $id, 'user' => $user, 'profileInfo' => $profileInfo, 'friendshipBtnText' => $friendshipButtonText, 'friendshipBtnValue' => $friendshipButtonValue, 'friendshipBtnClass' => $friendshipButtonClass]);
         }
 
         return redirect('/login')->with('error', 'You must be logged to see profiles.');
