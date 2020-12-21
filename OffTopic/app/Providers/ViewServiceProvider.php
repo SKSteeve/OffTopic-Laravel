@@ -27,5 +27,9 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $view->with('friends',  \App\Http\Controllers\FriendListController::getAllFriends());
         });
+
+        View::composer('*', function ($view) {
+            $view->with('notificationsCount', \App\Http\Controllers\NotificationsController::getNotificationsCount());
+        });
     }
 }
