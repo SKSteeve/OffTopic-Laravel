@@ -36,7 +36,7 @@ $(document).ready(function () {
                 let friends = data.friends;
 
                 if(friends.length < 1) {
-                    $('.friends-card').remove();
+                    $('.second-row-tables').empty();
 
                     let p = $('<p>');
                     p.addClass('w-100 d-flex justify-content-center mt-4');
@@ -45,6 +45,9 @@ $(document).ready(function () {
                     secondRowFriends.append(p);
 
                 } else {
+
+                    let friendsCountElement = $('.friends-count');
+                    friendsCountElement.text(friends.length);
 
                     let friendList = $('.friend-list');
                     friendList.empty();
