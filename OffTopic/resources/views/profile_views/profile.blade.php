@@ -45,7 +45,8 @@
             </div>
         </div>
         <input type="hidden" value="{{url('/')}}" id="url" name="url">
-        <input type="hidden" value="{{ $id }}" id="user-id" name="user-id">
+        <input type="hidden" value="{{ $id }}" id="profile-user-id" name="profile-user-id">
+        <input type="hidden" value="{{ Auth::id() }}" id="auth-user-id" name="auth-user-id">
     </div>
 
 @endsection
