@@ -2,7 +2,11 @@
 
 @section('content')
     <div class="px-5 mt-5 mb-2">
-        <h2 class="mb-5">Edit your profile</h2>
+        @if(Auth::id() == $user->id)
+            <h2 class="mb-5">Edit your profile</h2>
+        @elseif(Auth::user()->can('edit-user-profile'))
+            <h2 class="mb-5">Edit {{ $user->name }}'s profile</h2>
+        @endif
 
         <form action="{{ url('/users/profile', $user->id) }}/update" method="POST" enctype="multipart/form-data" class="bg-light mb-4">
             @csrf
@@ -73,13 +77,8 @@
             </div>
 
 
-
-
-
-
-
-
             <div class="d-flex justify-content-center">
+                <a class="btn btn-dark text-decoration-none text-white my-3 mr-1" href="{{ url('/users/profile', $user->id) }}"><span>Cancel</span></a>
                 <button type="submit" class="btn btn-success my-3">Save changes</button>
             </div>
         </form>
