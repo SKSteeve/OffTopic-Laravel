@@ -44,6 +44,10 @@ class UserProfileController extends Controller
                     $friendshipButtonText = 'Requested';
                     $friendshipButtonValue = 'deleteRequest';
                     $friendshipButtonClass = 'btn-secondary';
+                } else if(FriendRequestsController::checkIfRequestExist(Auth::id(), $id)) {
+                    $friendshipButtonText = 'Accept Friend';
+                    $friendshipButtonValue = 'acceptFriend';
+                    $friendshipButtonClass = 'btn-secondary';
                 } else {
                     $friendshipButtonText = 'Send Friend Request';
                     $friendshipButtonValue = 'createRequest';
