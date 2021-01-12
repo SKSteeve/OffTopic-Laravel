@@ -73,7 +73,21 @@ $(document).ready(function () {
                         friendList.append(li);
                     });
                 }
+
+                let userProfileId = $('#profile-user-id');
+
+                if(userToUnfriendId === userProfileId) {
+                    updateProfileButton();
+                }
             }
+        }
+        
+        function updateProfileButton() {
+            let friendshipBtn = $('.friendship-button');
+            friendshipBtn.text('Send Friend Request');
+            friendshipBtn.attr('value', 'createRequest');
+            friendshipBtn.removeClass('btn-danger');
+            friendshipBtn.addClass('btn-primary');
         }
 
         function errorReturned(error) {
