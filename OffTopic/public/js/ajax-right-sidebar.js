@@ -74,7 +74,7 @@ $(document).ready(function () {
                     });
                 }
 
-                let userProfileId = $('#profile-user-id');
+                let userProfileId = $('#profile-user-id').val();
 
                 if(userToUnfriendId === userProfileId) {
                     updateProfileButton();
