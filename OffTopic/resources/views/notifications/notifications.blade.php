@@ -43,7 +43,7 @@
                                         <button data-section="all" data-sender-id="{{ $notification->sender_id }}" data-notification-id="{{ $notification->id }}" class="decline-friend-btn btn btn-danger float-right ml-1">Decline</button>
                                         <button data-section="all" data-sender-id="{{ $notification->sender_id }}" data-notification-id="{{ $notification->id }}" class="accept-friend-btn btn btn-primary float-right ml-1 mb-1">Accept</button>
                                     @else
-                                        <button data-section="all" data-notification-id="{{ $notification->id }}" style="outline: none" class="close-notification-btn close float-right @if(!empty($notification->deleted_at)) text-danger @endif" aria-label="Close">&times;</button>
+                                        <button data-section="all" data-notification-id="{{ $notification->id }}" style="outline: none" class="remove-notification-btn close float-right @if(!empty($notification->deleted_at)) text-danger @endif" aria-label="Close">&times;</button>
                                     @endif
                                 </div>
                             </li>
@@ -67,7 +67,7 @@
                                         <button data-section="not-deleted" data-sender-id="{{ $notification->sender_id }}" data-notification-id="{{ $notification->id }}" class="decline-friend-btn btn btn-danger float-right ml-1">Decline</button>
                                         <button data-section="not-deleted" data-sender-id="{{ $notification->sender_id }}" data-notification-id="{{ $notification->id }}" class="accept-friend-btn btn btn-primary float-right ml-1 mb-1">Accept</button>
                                     @else
-                                        <button data-section="not-deleted" data-notification-id="{{ $notification->id }}" style="outline: none" class="close-notification-btn close float-right" aria-label="Close">&times;</button>
+                                        <button data-section="not-deleted" data-notification-id="{{ $notification->id }}" style="outline: none" class="remove-notification-btn close float-right" aria-label="Close">&times;</button>
                                     @endif
                                 </div>
                             </li>
@@ -87,7 +87,7 @@
                                 {{ $notification->body }}
 
                                 <div class="buttons ml-auto">
-                                    <button data-section="deleted" data-notification-id="{{ $notification->id }}" style="outline: none" class="close-notification-btn close float-right text-danger" aria-label="Close">&times;</button>
+                                    <button data-section="deleted" data-notification-id="{{ $notification->id }}" style="outline: none" class="remove-notification-btn close float-right text-danger" aria-label="Close">&times;</button>
                                 </div>
                             </li>
                         @endforeach
