@@ -30,7 +30,7 @@ $(document).ready(function () {
 
 
         /**
-         * Remove the current notification target and add new notification
+         *  DOM manipulation
          *
          * @param data
          */
@@ -48,36 +48,47 @@ $(document).ready(function () {
 
     function ajaxDeclineRequest(e) {
         console.log('decline req');
-        // todo .. make function that searchs for that if we have a list items and if we dont to put paragraph
-        // todo make refreshing the count on notifications function or refresh them manually ... getting their text and +1
 
         let senderUserId = e.target.getAttribute('data-sender-id');
 
         deleteNotifications(e, 'decline-friend-btn');
 
-        // $.ajax({
-        //     url: `${base_path}/users/decline-friend-request/${loggedUser}/${senderUserId}`,
-        //     type: "GET",
-        //     success: removeNotification,
-        //     error: errorReturned
-        // });
-        //
-        // function removeNotification(data) {
-        //     console.log(data.success);
-        //
-        //
-        //     if(data.notificationsCount < 1) {
-        //         $('.notifications-card').remove();
-        //
-        //         let p = $('<p>');
-        //         p.addClass('flex-fill bg-dark text-white text-center');
-        //         p.text('There are no notifications.');
-        //
-        //         let notificationsView = $('.notifications-view');
-        //         notificationsView.append(p);
-        //     }
-        // }
+        $.ajax({
+            url: `${base_path}/users/decline-friend-request/${loggedUser}/${senderUserId}`,
+            type: "GET",
+            success: updateCountOfNotificationsAndRefactorTabContainersHtmlIfNeeded,
+            error: errorReturned
+        });
+
+        /**
+         *  DOM manipulation
+         *
+         * @param data
+         */
+        function updateCountOfNotificationsAndRefactorTabContainersHtmlIfNeeded(data) {
+            console.log(data.success);
+
+            let allTabContainer = $('#all .notification-list');
+            let unreadedTabContainer = $('#not-deleted .notification-list');
+
+            let notificationsCountAllTabContainer = allTabContainer.children().length;
+            let notificationsCountUnreadedTabContainer = unreadedTabContainer.children().length;
+
+            updateNotificationTabCount('#all-tab', notificationsCountAllTabContainer);
+            updateNotificationTabCount('#not-deleted-tab', notificationsCountUnreadedTabContainer);
+
+            if(notificationsCountAllTabContainer < 1) {
+                $('#all .notifications-card').remove();
+                addParagraphNotification('#all');
+            }
+
+            if(notificationsCountUnreadedTabContainer < 1) {
+                $('#not-deleted .notifications-card').remove();
+                addParagraphNotification('#not-deleted');
+            }
+        }
     }
+
 
     function ajaxRemoveNotification() {
         console.log('remove notif')
@@ -93,8 +104,40 @@ $(document).ready(function () {
         console.log(error);
     }
 
-    function createNotificationsCard() {
-        
+    /**
+     *  Get the tab button from the given selector and update its count with the given
+     *
+     * @param notificationTabSelector
+     * @param notificationTabContainerCount
+     */
+    function updateNotificationTabCount(notificationTabSelector, notificationTabContainerCount) {
+        let tabButton = $(`${notificationTabSelector}`);
+
+        switch (notificationTabSelector) {
+            case '#all-tab':
+                tabButton.text(`All ( ${notificationTabContainerCount} )`);
+                break;
+            case '#not-deleted-tab':
+                tabButton.text(`Unreaded ( ${notificationTabContainerCount} )`);
+                break;
+            case '#deleted-tab':
+                tabButton.text(`Deleted ( ${notificationTabContainerCount} )`);
+                break;
+        }
+    }
+    
+    /**
+     *  Add notification paragraph to the given tabContainerSelector
+     *
+     * @param tabContainerSelector
+     */
+    function addParagraphNotification(tabContainerSelector) {
+        let p = $('<p>');
+        p.addClass('bg-dark text-white text-center mx-auto w-75');
+        p.text('There are no notifications.');
+
+        let tabContainerElement = $(`${tabContainerSelector}`);
+        tabContainerElement.append(p);
     }
 
     /**
