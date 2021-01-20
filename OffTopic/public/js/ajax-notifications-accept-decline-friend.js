@@ -47,8 +47,6 @@ $(document).ready(function () {
 
 
     function ajaxDeclineRequest(e) {
-        console.log('decline req');
-
         let senderUserId = e.target.getAttribute('data-sender-id');
 
         deleteNotifications(e, 'decline-friend-btn');
@@ -77,6 +75,8 @@ $(document).ready(function () {
             updateNotificationTabCount('#all-tab', notificationsCountAllTabContainer);
             updateNotificationTabCount('#not-deleted-tab', notificationsCountUnreadedTabContainer);
 
+            updateRightSidebarNotificationBadge('-');
+
             if(notificationsCountAllTabContainer < 1) {
                 $('#all .notifications-card').remove();
                 addParagraphNotification('#all');
@@ -90,8 +90,92 @@ $(document).ready(function () {
     }
 
 
-    function ajaxRemoveNotification() {
-        console.log('remove notif')
+    function ajaxRemoveNotification(e) {
+
+        // ajax request ...
+
+        let notificationList = e.target.parentNode.parentNode;
+
+        let allTabContainer = $('#all .notification-list');
+        let deletedTabContainer = $('#deleted .notification-list');
+        let unreadedTabContainer = $('#not-deleted .notification-list');
+
+        let notificationsCountAllTabContainer = allTabContainer.children().length;
+        let notificationsCountDeletedTabContainer = deletedTabContainer.children().length;
+        let notificationsCountUnreadedTabContainer = unreadedTabContainer.children().length;
+
+        let notificationSection = e.target.getAttribute('data-section');
+        let notificationId = e.target.getAttribute('data-notification-id');
+        let isNotificationDeleted = e.target.getAttribute('data-deleted');
+
+        switch (notificationSection) {
+            case 'all':
+                if(isNotificationDeleted == 'true') {
+                    console.log('all iztrit');
+                    deleteNotifications(e, 'remove-notification-btn');
+
+                    updateNotificationTabCount('#all-tab', notificationsCountAllTabContainer);
+                    updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
+
+                } else {
+                    e.target.classList.add('text-danger');
+                    e.target.setAttribute('data-deleted', 'true');
+
+                    let unreadedNotification = $(`#not-deleted .notification-list .remove-notification-btn[data-notification-id=` + notificationId + ']').parent().parent();
+                    unreadedNotification.remove();
+                    notificationsCountUnreadedTabContainer -= 1;
+
+                    if(notificationsCountUnreadedTabContainer < 1) {
+                        let unreadedContainerMain = $('#not-deleted');
+                        unreadedContainerMain.empty();
+                        addParagraphNotification('#not-deleted');
+                    }
+                    addNotificationListToDeletedTabContainer(deletedTabContainer, notificationList);
+                    notificationsCountDeletedTabContainer += 1;
+
+                    let notificationCloseButtonInDeletedTabContainer = $(`#deleted .notification-list .remove-notification-btn[data-notification-id=` + notificationId + ']');
+                    notificationCloseButtonInDeletedTabContainer.attr('data-section', 'deleted');
+                    notificationCloseButtonInDeletedTabContainer.attr('data-deleted', 'true');
+
+                    updateNotificationTabCount('#not-deleted-tab', notificationsCountUnreadedTabContainer);
+                    updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
+                    updateRightSidebarNotificationBadge('-');
+                }
+                break;
+            case 'not-deleted':
+                notificationList.remove();
+                notificationsCountUnreadedTabContainer -= 1;
+
+                console.log(notificationList);
+
+                if(notificationsCountUnreadedTabContainer < 1) {
+                    let unreadedContainerMain = $('#not-deleted');
+                    unreadedContainerMain.empty();
+                    addParagraphNotification('#not-deleted');
+                }
+
+                addNotificationListToDeletedTabContainer(deletedTabContainer, notificationList);
+                notificationsCountDeletedTabContainer += 1;
+
+                let notificationCloseButtonInDeletedTabContainer = $(`#deleted .notification-list .remove-notification-btn[data-notification-id=` + notificationId + ']');
+                notificationCloseButtonInDeletedTabContainer.attr('data-section', 'deleted');
+                notificationCloseButtonInDeletedTabContainer.attr('data-deleted', 'true');
+
+                updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
+                updateNotificationTabCount('#not-deleted-tab', notificationsCountUnreadedTabContainer);
+                break;
+            case 'deleted':
+                console.log('tuk');
+                deleteNotifications(e, 'remove-notification-btn');
+
+                notificationsCountDeletedTabContainer -= 1;
+                notificationsCountAllTabContainer -= 1;
+
+                updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
+                updateNotificationTabCount('#all-tab', notificationsCountAllTabContainer);
+                break;
+        }
+
     }
 
 
@@ -104,6 +188,56 @@ $(document).ready(function () {
         console.log(error);
     }
 
+    /**
+     *  Add notification to deletedTabContainer and refactor the code if we didnt have any notifications
+     *  before that
+     *
+     * @param deletedTabContainer
+     * @param notificationList
+     */
+    function addNotificationListToDeletedTabContainer(deletedTabContainer, notificationList) {
+        let cloneNotificationList = notificationList.cloneNode(true);
+
+
+        let deletedTabContainerMain = $('#deleted');
+        let foundParagraph = deletedTabContainerMain.find("p");
+
+        if(foundParagraph.length > 0) {
+            foundParagraph.remove();
+
+            let notificationsCard = $('<div>');
+            notificationsCard.addClass('notifications-card card w-75 m-auto');
+
+            let notificationsList = $('<ul>');
+            notificationsList.addClass('notification-list list-group list-group-flush');
+
+            notificationsList.append(cloneNotificationList);
+            notificationsCard.append(notificationsList);
+            deletedTabContainerMain.append(notificationsCard);
+        } else {
+            deletedTabContainer.prepend(cloneNotificationList);
+        }
+    }
+    
+    /**
+     *  Update the notifications badge count on right sidebar
+     *
+     * @param operator
+     */
+    function updateRightSidebarNotificationBadge(operator) {
+        let notificationsBadge = $('.notifications-count');
+        let notificationsBadgeValue = notificationsBadge.text();
+
+        switch (operator) {
+            case '-':
+                notificationsBadge.text(+notificationsBadgeValue - 1);
+                break;
+            case '+':
+                notificationsBadge.text(+notificationsBadgeValue + 1);
+                break;
+        }
+    }
+    
     /**
      *  Get the tab button from the given selector and update its count with the given
      *
