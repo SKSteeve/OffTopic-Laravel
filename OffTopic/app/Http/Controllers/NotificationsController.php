@@ -11,7 +11,7 @@ class NotificationsController extends Controller
 {
 
     /**
-     *  Display a list of all notifications
+     *  Display a list of all notifications, deleted notifications and not deleted (unreaded) notifications
      *
      * @param $id
      */
@@ -20,9 +20,12 @@ class NotificationsController extends Controller
         if(Auth::id() == $id) {
 
             $user = User::find($id);
-            $notifications = $user->notifications()->orderBy('created_at', 'desc')->get();
 
-            return view('notifications.notifications')->with(['notifications' => $notifications]);
+            $allNotifications = $user->notifications()->withTrashed()->orderBy('created_at', 'desc')->get();
+            $deletedNotifications = $user->notifications()->onlyTrashed()->orderBy('created_at', 'desc')->get();
+            $notDeletedNotifications = $user->notifications()->orderBy('created_at', 'desc')->get();
+
+            return view('notifications.notifications')->with(['allNotifications' => $allNotifications, 'deletedNotifications' => $deletedNotifications, 'notDeletedNotifications' => $notDeletedNotifications]);
         }
 
         return redirect("/users/profile/$id")->with('error', 'Access denied.');
@@ -36,31 +39,54 @@ class NotificationsController extends Controller
      * @param string $body
      * @param int $user_id
      * @param int|null $sender_id
+     * @return mixed
      */
-    public static function createNotification(string $type, string $name, string $body, int $user_id, int $sender_id = null):void
+    public static function createNotification(string $type, string $name, string $body, int $user_id, int $sender_id = null)
     {
-        if($type == 'FriendRequest' || $type == 'NewFriend') {
-            Notification::create([
-                'name' => $name,
-                'body' => $body,
-                'user_id' => $user_id,
-                'sender_id' => $sender_id
-            ]);
-        }
+        $notification = Notification::create([
+            'name' => $name,
+            'body' => $body,
+            'user_id' => $user_id,
+            'sender_id' => $sender_id
+        ]);
+
+        $lastId = $notification->id;
+        return $lastId;
     }
 
     /**
-     *  Delete specific notification
+     *  Hard Deleting specific notification
      *
      * @param string $type
      * @param string $name
      * @param int $user_id
      * @param int|null $sender_id
      */
-    public static function deleteNotification(string $type, string $name, int $user_id, int $sender_id = null)
+    public static function deleteNotificationHard(string $type, string $name, int $user_id, int $sender_id = null)
     {
         if($type == 'FriendRequest' || $type == 'NewFriend') {
-            Notification::where('user_id', $user_id)->where('name', $name)->where('sender_id', $sender_id)->first()->delete();
+            Notification::where('user_id', $user_id)->where('name', $name)->where('sender_id', $sender_id)->first()->forceDelete();
+        }
+    }
+
+
+
+    /**
+     *  Soft Deleting specific notification
+     *
+     * @param string $type
+     * @param string $name
+     * @param int $user_id
+     * @param int|null $sender_id
+     */
+    public static function deleteNotificationSoftOrHard($userId, $notificationId, $hardOrSoft)
+    {
+        if(Auth::check() && $userId == Auth::id()) {
+            if($hardOrSoft == 'soft') {
+                Notification::where('id', $notificationId)->delete();
+            } else {
+                Notification::where('id', $notificationId)->forceDelete();
+            }
         }
     }
 
@@ -77,7 +103,7 @@ class NotificationsController extends Controller
 
 
     /**
-     *  Return the count of notifications for the logged user
+     *  Return the count of not deleted notifications for the logged user
      *
      * @return int
      */
