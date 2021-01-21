@@ -53,7 +53,7 @@ class FriendListController extends Controller
     public function store($requestedUserId, $senderUserId)
     {
         // delete the notification and friend request
-        NotificationsController::deleteNotification('FriendRequest', 'Friend Request', $requestedUserId, $senderUserId);
+        NotificationsController::deleteNotificationHard('FriendRequest', 'Friend Request', $requestedUserId, $senderUserId);
         FriendRequestsController::deleteFriendRequest($requestedUserId, $senderUserId);
 
         // make new friend ... insert 2 rows with changed positions in friend_list
@@ -71,13 +71,13 @@ class FriendListController extends Controller
         $requestedUser = User::findOrFail($requestedUserId);
         $senderUser = User::findOrFail($senderUserId);
 
-        NotificationsController::createNotification('NewFriend', 'New Friend', "You are now friends with {$senderUser->name}", $requestedUserId, $senderUserId);
+        $notificationId = NotificationsController::createNotification('NewFriend', 'New Friend', "You are now friends with {$senderUser->name}", $requestedUserId, $senderUserId);
         NotificationsController::createNotification('NewFriend', 'New Friend', "You are now friends with {$requestedUser->name}", $senderUserId, $requestedUserId);
 
         // get the friends and return them ... to refresh the friend list after accept friend request
         $friends = self::getAllFriends();
 
-        return response()->json(['success' => "Successfully created relationship between users {$requestedUser->name} and {$senderUser->name}", 'notification' => "You are now friends with {$senderUser->name}", 'friends' => $friends]);
+        return response()->json(['success' => "Successfully created relationship between users {$requestedUser->name} and {$senderUser->name}", 'notification' => "You are now friends with {$senderUser->name}", 'friends' => $friends, 'notificationId' => $notificationId]);
     }
 
 
@@ -95,8 +95,8 @@ class FriendListController extends Controller
         FriendList::where('user_id', $firstUserId)->where('friend_id', $secondUserId)->first()->delete();
         FriendList::where('user_id', $secondUserId)->where('friend_id', $firstUserId)->first()->delete();
 
-        NotificationsController::deleteNotification('NewFriend', 'New Friend', $firstUserId, $secondUserId);
-        NotificationsController::deleteNotification('NewFriend', 'New Friend', $secondUserId, $firstUserId);
+        NotificationsController::deleteNotificationHard('NewFriend', 'New Friend', $firstUserId, $secondUserId);
+        NotificationsController::deleteNotificationHard('NewFriend', 'New Friend', $secondUserId, $firstUserId);
 
         $user = User::where('id', $firstUserId)->first();
         $friends = FriendListController::getAllFriends();
@@ -116,9 +116,9 @@ class FriendListController extends Controller
     public function deleteFriendRequestAndNotification($requestedUserId, $senderUserId)
     {
         FriendRequestsController::deleteFriendRequest($requestedUserId, $senderUserId);
-        NotificationsController::deleteNotification('FriendRequest', 'Friend Request', $requestedUserId, $senderUserId);
+        NotificationsController::deleteNotificationHard('FriendRequest', 'Friend Request', $requestedUserId, $senderUserId);
 
-        $notificationsCount = NotificationsController::notificationsCount();
+        $notificationsCount = NotificationsController::getNotificationsCount();
 
         return response()->json(['success' => 'Deleted friend request and the notification for it.', 'notificationsCount' => $notificationsCount]);
     }
