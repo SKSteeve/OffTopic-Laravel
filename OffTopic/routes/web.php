@@ -52,8 +52,8 @@ Route::get('/friend-request/{id}/delete', 'FriendRequestsController@destroy');
 // Notifications Controller
 Route::get('/users/{id}/notifications', 'NotificationsController@index');
 // AJAX for Clear button and "single delete" button
-Route::get('/users/{id}/notifications/clear', 'NotificationsController@deleteAllNotifications'); //TODO
-//Route::get('/users/{id}/notifications/{id}', 'NotificationsController@deleteNotification');
+Route::get('/users/{id}/notifications/clear', 'NotificationsController@deleteAllNotifications');
+Route::get('/users/{id}/notifications/{notificationId}/delete/{hardOrSoft}', 'NotificationsController@deleteNotificationSoftOrHard');
 
 
 // Friend List Controller
