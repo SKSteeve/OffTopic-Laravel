@@ -58,7 +58,7 @@ class FriendRequestsController extends Controller
         $friendRequest = FriendRequests::where('requested_user_id', $id)->where('sender_user_id', Auth::id())->first();
         $friendRequest->delete();
 
-        NotificationsController::deleteNotification('FriendRequest', 'Friend Request', $id, Auth::id());
+        NotificationsController::deleteNotificationHard('FriendRequest', 'Friend Request', $id, Auth::id());
 
         return response()->json(['success' => 'Removed friend request.']);
     }
