@@ -38,6 +38,12 @@ $(document).ready(function () {
             // notifications, notificationId, friends -> variables returned from back-end
             addNotificationInAllAndUnreadedTabs(data);
 
+            let notificationCloseButtonInAllTabContainer = $(`#all .notification-list .remove-notification-btn[data-notification-id=` + data.notificationId + ']');
+            notificationCloseButtonInAllTabContainer.on('click', ajaxRemoveNotification);
+
+            let notificationCloseButtonInUnreadedTabContainer = $(`#not-deleted .notification-list .remove-notification-btn[data-notification-id=` + data.notificationId + ']');
+            notificationCloseButtonInUnreadedTabContainer.on('click', ajaxRemoveNotification);
+
             let friends = data.friends;
             rightSidebarRefactorHtml(friends);
             updateFriendsCount(friends);
@@ -92,37 +98,84 @@ $(document).ready(function () {
 
     function ajaxRemoveNotification(e) {
 
-        // ajax request ...
+        var notificationId = e.target.getAttribute('data-notification-id');
+        var isNotificationDeleted = e.target.getAttribute('data-deleted');
 
-        let notificationList = e.target.parentNode.parentNode;
+        let hardOrSoft = 'soft';
+        if(isNotificationDeleted == 'true') {
+            hardOrSoft = 'hard';
+        }
 
-        let allTabContainer = $('#all .notification-list');
-        let deletedTabContainer = $('#deleted .notification-list');
-        let unreadedTabContainer = $('#not-deleted .notification-list');
+        $.ajax({
+            url: `${base_path}/users/${loggedUser}/notifications/${notificationId}/delete/${hardOrSoft}`,
+            type: "GET",
+            success: updateNotificationsTabsAndContainersAndCounts,
+            error: errorReturned
+        });
 
-        let notificationsCountAllTabContainer = allTabContainer.children().length;
-        let notificationsCountDeletedTabContainer = deletedTabContainer.children().length;
-        let notificationsCountUnreadedTabContainer = unreadedTabContainer.children().length;
+        function updateNotificationsTabsAndContainersAndCounts() {
+            let notificationList = e.target.parentNode.parentNode;
 
-        let notificationSection = e.target.getAttribute('data-section');
-        let notificationId = e.target.getAttribute('data-notification-id');
-        let isNotificationDeleted = e.target.getAttribute('data-deleted');
+            let allTabContainer = $('#all .notification-list');
+            let deletedTabContainer = $('#deleted .notification-list');
+            let unreadedTabContainer = $('#not-deleted .notification-list');
 
-        switch (notificationSection) {
-            case 'all':
-                if(isNotificationDeleted == 'true') {
-                    console.log('all iztrit');
-                    deleteNotifications(e, 'remove-notification-btn');
+            let notificationsCountAllTabContainer = allTabContainer.children().length;
+            let notificationsCountDeletedTabContainer = deletedTabContainer.children().length;
+            let notificationsCountUnreadedTabContainer = unreadedTabContainer.children().length;
 
-                    updateNotificationTabCount('#all-tab', notificationsCountAllTabContainer);
-                    updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
+            let notificationSection = e.target.getAttribute('data-section');
 
-                } else {
-                    e.target.classList.add('text-danger');
-                    e.target.setAttribute('data-deleted', 'true');
+            switch (notificationSection) {
+                case 'all':
+                    if(isNotificationDeleted == 'true') {
+                        deleteNotifications(e, 'remove-notification-btn');
+                        notificationsCountAllTabContainer -= 1;
+                        notificationsCountDeletedTabContainer -= 1;
 
-                    let unreadedNotification = $(`#not-deleted .notification-list .remove-notification-btn[data-notification-id=` + notificationId + ']').parent().parent();
-                    unreadedNotification.remove();
+                        if(notificationsCountAllTabContainer < 1) {
+                            let allContainerMain = $('#all');
+                            allContainerMain.empty();
+                            addParagraphNotification('#all');
+                        }
+
+                        if(notificationsCountDeletedTabContainer < 1) {
+                            let deletedContainerMain = $('#deleted');
+                            deletedContainerMain.empty();
+                            addParagraphNotification('#deleted');
+                        }
+
+                        updateNotificationTabCount('#all-tab', notificationsCountAllTabContainer);
+                        updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
+
+                    } else {
+                        e.target.classList.add('text-danger');
+                        e.target.setAttribute('data-deleted', 'true');
+
+                        let unreadedNotification = $(`#not-deleted .notification-list .remove-notification-btn[data-notification-id=` + notificationId + ']').parent().parent();
+                        unreadedNotification.remove();
+                        notificationsCountUnreadedTabContainer -= 1;
+
+                        if(notificationsCountUnreadedTabContainer < 1) {
+                            let unreadedContainerMain = $('#not-deleted');
+                            unreadedContainerMain.empty();
+                            addParagraphNotification('#not-deleted');
+                        }
+                        addNotificationListToDeletedTabContainer(deletedTabContainer, notificationList);
+                        notificationsCountDeletedTabContainer += 1;
+
+                        let notificationCloseButtonInDeletedTabContainer = $(`#deleted .notification-list .remove-notification-btn[data-notification-id=` + notificationId + ']');
+                        notificationCloseButtonInDeletedTabContainer.attr('data-section', 'deleted');
+                        notificationCloseButtonInDeletedTabContainer.attr('data-deleted', 'true');
+                        notificationCloseButtonInDeletedTabContainer.on('click', ajaxRemoveNotification);
+
+                        updateNotificationTabCount('#not-deleted-tab', notificationsCountUnreadedTabContainer);
+                        updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
+                        updateRightSidebarNotificationBadge('-');
+                    }
+                    break;
+                case 'not-deleted':
+                    notificationList.remove();
                     notificationsCountUnreadedTabContainer -= 1;
 
                     if(notificationsCountUnreadedTabContainer < 1) {
@@ -130,50 +183,47 @@ $(document).ready(function () {
                         unreadedContainerMain.empty();
                         addParagraphNotification('#not-deleted');
                     }
+
                     addNotificationListToDeletedTabContainer(deletedTabContainer, notificationList);
                     notificationsCountDeletedTabContainer += 1;
 
                     let notificationCloseButtonInDeletedTabContainer = $(`#deleted .notification-list .remove-notification-btn[data-notification-id=` + notificationId + ']');
                     notificationCloseButtonInDeletedTabContainer.attr('data-section', 'deleted');
                     notificationCloseButtonInDeletedTabContainer.attr('data-deleted', 'true');
+                    notificationCloseButtonInDeletedTabContainer.addClass('text-danger');
+                    notificationCloseButtonInDeletedTabContainer.on('click', ajaxRemoveNotification);
 
-                    updateNotificationTabCount('#not-deleted-tab', notificationsCountUnreadedTabContainer);
+                    let notificationCloseButtonInAllTabContainer = $(`#all .notification-list .remove-notification-btn[data-notification-id=` + notificationId + ']');
+                    notificationCloseButtonInAllTabContainer.attr('data-section', 'all');
+                    notificationCloseButtonInAllTabContainer.attr('data-deleted', 'true');
+                    notificationCloseButtonInAllTabContainer.addClass('text-danger');
+
                     updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
+                    updateNotificationTabCount('#not-deleted-tab', notificationsCountUnreadedTabContainer);
                     updateRightSidebarNotificationBadge('-');
-                }
-                break;
-            case 'not-deleted':
-                notificationList.remove();
-                notificationsCountUnreadedTabContainer -= 1;
+                    break;
+                case 'deleted':
+                    deleteNotifications(e, 'remove-notification-btn');
 
-                console.log(notificationList);
+                    notificationsCountDeletedTabContainer -= 1;
+                    notificationsCountAllTabContainer -= 1;
 
-                if(notificationsCountUnreadedTabContainer < 1) {
-                    let unreadedContainerMain = $('#not-deleted');
-                    unreadedContainerMain.empty();
-                    addParagraphNotification('#not-deleted');
-                }
+                    if(notificationsCountDeletedTabContainer < 1) {
+                        let deletedContainerMain = $('#deleted');
+                        deletedContainerMain.empty();
+                        addParagraphNotification('#deleted');
+                    }
 
-                addNotificationListToDeletedTabContainer(deletedTabContainer, notificationList);
-                notificationsCountDeletedTabContainer += 1;
+                    if(notificationsCountAllTabContainer < 1) {
+                        let allContainerMain = $('#all');
+                        allContainerMain.empty();
+                        addParagraphNotification('#all');
+                    }
 
-                let notificationCloseButtonInDeletedTabContainer = $(`#deleted .notification-list .remove-notification-btn[data-notification-id=` + notificationId + ']');
-                notificationCloseButtonInDeletedTabContainer.attr('data-section', 'deleted');
-                notificationCloseButtonInDeletedTabContainer.attr('data-deleted', 'true');
-
-                updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
-                updateNotificationTabCount('#not-deleted-tab', notificationsCountUnreadedTabContainer);
-                break;
-            case 'deleted':
-                console.log('tuk');
-                deleteNotifications(e, 'remove-notification-btn');
-
-                notificationsCountDeletedTabContainer -= 1;
-                notificationsCountAllTabContainer -= 1;
-
-                updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
-                updateNotificationTabCount('#all-tab', notificationsCountAllTabContainer);
-                break;
+                    updateNotificationTabCount('#deleted-tab', notificationsCountDeletedTabContainer);
+                    updateNotificationTabCount('#all-tab', notificationsCountAllTabContainer);
+                    break;
+            }
         }
 
     }
@@ -286,11 +336,11 @@ $(document).ready(function () {
 
         let liForAllTabContainer = $('<li>');
         liForAllTabContainer.addClass('list-group-item clearfix d-flex align-items-center');
-        liForAllTabContainer.html(`${data.notification}<div class="buttons ml-auto"><button data-section="all" data-notification-id="${data.notificationId}" style="outline: none" class="remove-notification-btn close float-right" aria-label="Close">&times;</button></div>`);
+        liForAllTabContainer.html(`${data.notification}<div class="buttons ml-auto"><button data-section="all" data-deleted="false" data-notification-id="${data.notificationId}" style="outline: none" class="remove-notification-btn close float-right" aria-label="Close">&times;</button></div>`);
 
         let liForUnreadedTabContainer = $('<li>');
         liForUnreadedTabContainer.addClass('list-group-item clearfix d-flex align-items-center');
-        liForUnreadedTabContainer.html(`${data.notification}<div class="buttons ml-auto"><button data-section="not-deleted" data-notification-id="${data.notificationId}" style="outline: none" class="remove-notification-btn close float-right" aria-label="Close">&times;</button></div>`);
+        liForUnreadedTabContainer.html(`${data.notification}<div class="buttons ml-auto"><button data-section="not-deleted" data-deleted="false" data-notification-id="${data.notificationId}" style="outline: none" class="remove-notification-btn close float-right" aria-label="Close">&times;</button></div>`);
 
         allTabContainer.prepend(liForAllTabContainer);
         unreadedTabContainer.prepend(liForUnreadedTabContainer);
