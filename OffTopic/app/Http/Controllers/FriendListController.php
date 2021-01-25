@@ -96,12 +96,12 @@ class FriendListController extends Controller
         FriendList::where('user_id', $secondUserId)->where('friend_id', $firstUserId)->first()->delete();
 
         NotificationsController::deleteNotificationHard('NewFriend', 'New Friend', $firstUserId, $secondUserId);
-        NotificationsController::deleteNotificationHard('NewFriend', 'New Friend', $secondUserId, $firstUserId);
+        $notificationId = NotificationsController::deleteNotificationHard('NewFriend', 'New Friend', $secondUserId, $firstUserId);
 
         $user = User::where('id', $firstUserId)->first();
         $friends = FriendListController::getAllFriends();
 
-        return response()->json(['success' => "You successfully unfriended user {$user->name}", 'friends' => $friends]);
+        return response()->json(['success' => "You successfully unfriended user {$user->name}", 'friends' => $friends, 'notificationId' => $notificationId]);
     }
 
 
