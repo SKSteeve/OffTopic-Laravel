@@ -74,6 +74,10 @@ $(document).ready(function () {
                     });
                 }
 
+                if(data.notificationId > 0) {
+                    updateNotifications(data.notificationId);
+                }
+
                 let userProfileId = $('#profile-user-id').val();
 
                 if(userToUnfriendId === userProfileId) {
@@ -90,6 +94,68 @@ $(document).ready(function () {
             friendshipBtn.addClass('btn-primary');
         }
 
+        function updateNotifications(notificationId) {
+            let notificationsButtons = $(`.notification-list .remove-notification-btn[data-notification-id=` + notificationId + ']');
+            let notificationsListsElements = notificationsButtons.parent().parent();
+
+            notificationsListsElements.remove();
+
+            let allTabContainer = $('#all .notification-list');
+            let unreadedTabContainer = $('#not-deleted .notification-list');
+            let deletedTabContainer = $('#deleted .notification-list');
+
+            let notificationsCountAllTabContainer = allTabContainer.children().length;
+            let notificationsCountUnreadedTabContainer = unreadedTabContainer.children().length;
+            let notificationsCountDeletedTabContainer = deletedTabContainer.children().length;
+
+
+
+            if(notificationsCountAllTabContainer < 1) {
+                let allContainerMain = $('#all');
+                allContainerMain.empty();
+
+                let p = $('<p>');
+                p.addClass('bg-dark text-white text-center mx-auto w-75');
+                p.text('There are no notifications.');
+
+                allContainerMain.append(p);
+            }
+
+            if(notificationsCountUnreadedTabContainer < 1) {
+                let unreadedContainerMain = $('#not-deleted');
+                unreadedContainerMain.empty();
+
+                let p = $('<p>');
+                p.addClass('bg-dark text-white text-center mx-auto w-75');
+                p.text('There are no notifications.');
+
+                unreadedContainerMain.append(p);
+            }
+
+            if(notificationsCountDeletedTabContainer < 1) {
+                let deletedContainerMain = $('#deleted');
+                deletedContainerMain.empty();
+
+                let p = $('<p>');
+                p.addClass('bg-dark text-white text-center mx-auto w-75');
+                p.text('There are no notifications.');
+
+                deletedContainerMain.append(p);
+            }
+
+            let allTabBtn = $('#all-tab');
+            let notDeletedTabBtn = $('#not-deleted-tab');
+            let deletedTabBtn = $('#deleted-tab');
+
+            allTabBtn.text(`All ( ${notificationsCountAllTabContainer} )`);
+            notDeletedTabBtn.text(`Unreaded ( ${notificationsCountUnreadedTabContainer} )`);
+            deletedTabBtn.text(`Deleted ( ${notificationsCountDeletedTabContainer} )`);
+
+            let notificationsBadge = $('.notifications-count');
+            notificationsBadge.text(notificationsCountUnreadedTabContainer);
+
+        }
+        
         function errorReturned(error) {
             console.log(error);
         }
