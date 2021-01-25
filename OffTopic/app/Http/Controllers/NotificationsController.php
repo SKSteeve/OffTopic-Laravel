@@ -56,6 +56,8 @@ class NotificationsController extends Controller
 
     /**
      *  Hard Deleting specific notification
+     *  if there is notification found, we return the notification id
+     *  if there is no notification found return -1
      *
      * @param string $type
      * @param string $name
@@ -65,7 +67,15 @@ class NotificationsController extends Controller
     public static function deleteNotificationHard(string $type, string $name, int $user_id, int $sender_id = null)
     {
         if($type == 'FriendRequest' || $type == 'NewFriend') {
-            Notification::where('user_id', $user_id)->where('name', $name)->where('sender_id', $sender_id)->first()->forceDelete();
+            $notification = Notification::where('user_id', $user_id)->where('name', $name)->where('sender_id', $sender_id)->withTrashed()->first();
+
+            if($notification !== null) {
+                $notificationId = $notification->id;
+                $notification->forceDelete();
+                return $notificationId;
+            }
+
+            return -1;
         }
     }
 
