@@ -76,5 +76,27 @@ class NotificationsSeeder extends Seeder
             'updated_at' => null,
             'deleted_at' => null,
         ]);
+
+        DB::table('notifications')->insert([
+            'id' => 7,
+            'name' => 'New Friend',
+            'body' => 'You are now friends with Remzi',
+            'user_id' => 2,
+            'sender_id' => 4,
+            'created_at' => now(),
+            'updated_at' => null,
+            'deleted_at' => null,
+        ]);
+
+        DB::table('notifications')->insert([
+            'id' => 8,
+            'name' => 'New Friend',
+            'body' => 'You are now friends with Remzi',
+            'user_id' => 1,
+            'sender_id' => 4,
+            'created_at' => now(),
+            'updated_at' => null,
+            'deleted_at' => null,
+        ]);
     }
 }
