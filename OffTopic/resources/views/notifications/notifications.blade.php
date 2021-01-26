@@ -2,7 +2,7 @@
 
 @push('scripts')
     <script src="{{ asset('js/ajax-notifications-nav-tabs.js') }}"></script>
-    <script src="{{ asset('js/ajax-notifications-accept-decline-friend.js') }}"></script>
+    <script src="{{ asset('js/ajax-notifications-buttons.js') }}"></script>
 @endpush
 
 @section('content')
