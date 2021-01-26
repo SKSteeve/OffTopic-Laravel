@@ -36,3 +36,10 @@ This is CRUD project with Laravel using:
    * **php artisan migrate:fresh --seed**
 ### 6. Now type in the browser the url:
    * **localhost/**< the folder you created at step 1 >**/OffTopic-Laravel/OffTopic/public**
+### 7. Test:
+     **Log as admin**
+   * email -> **remzi@da.com**
+   * password -> **password**
+     **Log as user**
+   * email -> **marti-parti@gmail.com**
+   * password -> **password**
