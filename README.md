@@ -44,5 +44,5 @@ This is CRUD project with Laravel using:
    * password -> **password**
    
    Log as user
-   * email -> **marti-parti@gmail.com**
+   * emails -> **marti-parti@gmail.com**, **straci11@gmail.com**, **tosho_kukata97@abv.bg**, **ivangeshev@abv.bg**
    * password -> **password**
