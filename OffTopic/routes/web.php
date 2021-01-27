@@ -60,3 +60,7 @@ Route::get('/users/delete-friendship/{userId}/delete', 'FriendListController@del
 // AJAX for Accept and Decline buttons in Notification view
 Route::get('/users/accept-friend-request/{requestedUserId}/{senderUserId}', 'FriendListController@store');
 Route::get('/users/decline-friend-request/{requestedUserId}/{senderUserId}', 'FriendListController@deleteFriendRequestAndNotification');
+
+
+// About Me Controller
+Route::get('/about-me', 'AboutMeController@index');
