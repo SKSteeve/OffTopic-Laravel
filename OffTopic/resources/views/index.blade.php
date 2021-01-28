@@ -18,8 +18,8 @@
                         <div class="carousel-caption d-none d-md-block">
                             <h5>Welcome To OffTopic</h5>
                             <p class="font-weight-bold">Read my Blog posts, discuss every topic with other users in our Forum and learn new things!</p>
-                            <button class="btn btn-primary">Register</button>
-                            <button class="btn btn-primary">Login</button>
+                            <a href="{{ url('/register') }}" class="btn btn-primary">Register</a>
+                            <a href="{{ url('/login') }}" class="btn btn-primary">Login</a>
                         </div>
                     </div>
                     <div class="carousel-item">
@@ -27,7 +27,7 @@
                         <div class="carousel-caption d-none d-md-block">
                             <h5>About The Project</h5>
                             <p>Used technologies: Laravel, PHP, JS, jQuery, Bootstrap, HTML, CSS, MySQL</p>
-                            <button class="btn btn-primary">Check Project Repo</button>
+                            <a href="https://github.com/SKSteeve/OffTopic-Laravel" class="btn btn-primary">Check Project Repo</a>
                         </div>
                     </div>
                     <div class="carousel-item">
@@ -35,7 +35,7 @@
                         <div class="carousel-caption d-none d-md-block">
                             <h5>Work with me:</h5>
                             <p>For personal, custom projects and work</p>
-                            <button class="btn btn-primary">Contact Me</button>
+                            <a href="{{ url('/about-me') }}" class="btn btn-primary">Contact Me</a>
                         </div>
                     </div>
                 </div>
