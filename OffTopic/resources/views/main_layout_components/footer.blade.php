@@ -20,11 +20,13 @@
     </div>
     <div class="col-md-3">
         <strong>Find me</strong>
-        <p><i class="fab fa-facebook"></i> <i class="fab fa-linkedin"></i></p>
-        <p></p>
+        <p>
+            <a href="https://www.facebook.com/profile.php?id=100013381451395"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.linkedin.com/"><i class="fab fa-linkedin"></i></a>
+        </p>
     </div>
     <div class="col-md-3">
         <strong>Other sites:</strong>
-        <p><a href="https://avtoserviz-autokris.com">Auto Kris</a></p>
+        <p><a href="https://sksteeve.github.io/Jekyll-Project">Auto Kris</a></p>
     </div>
 </footer>
