@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Notification;
 use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationsController extends Controller
@@ -14,6 +13,7 @@ class NotificationsController extends Controller
      *  Display a list of all notifications, deleted notifications and not deleted (unreaded) notifications
      *
      * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
     public function index($id)
     {
@@ -63,6 +63,7 @@ class NotificationsController extends Controller
      * @param string $name
      * @param int $user_id
      * @param int|null $sender_id
+     * @return int
      */
     public static function deleteNotificationHard(string $type, string $name, int $user_id, int $sender_id = null)
     {
@@ -80,14 +81,12 @@ class NotificationsController extends Controller
     }
 
 
-
     /**
-     *  Soft Deleting specific notification
+     *  Soft or Hard Deleting specific notification
      *
-     * @param string $type
-     * @param string $name
-     * @param int $user_id
-     * @param int|null $sender_id
+     * @param $userId
+     * @param $notificationId
+     * @param $hardOrSoft
      */
     public static function deleteNotificationSoftOrHard($userId, $notificationId, $hardOrSoft)
     {
