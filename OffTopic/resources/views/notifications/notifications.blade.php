@@ -99,6 +99,7 @@
 
     <input type="hidden" value="{{url('/')}}" id="url" name="url">
     <input type="hidden" value="{{ Auth::id() }}" id="user-id" name="user-id">
+    <input type="hidden" value="notifications" id="page" name="page">
 
 </div>
 
