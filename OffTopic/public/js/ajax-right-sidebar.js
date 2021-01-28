@@ -1,6 +1,7 @@
 $(document).ready(function () {
     var secondRowFriends = $('.second-row-tables');
     let base_path = $('#url').val();
+    let currentPage = $('#page').val();
 
     secondRowFriends.on('click', 'li', function (e) {
 
@@ -74,8 +75,10 @@ $(document).ready(function () {
                     });
                 }
 
-                if(data.notificationId > 0) {
+                if(data.notificationId > 0 && currentPage == 'notifications') {
                     updateNotifications(data.notificationId);
+                } else {
+                    updateBadge();
                 }
 
                 let userProfileId = $('#profile-user-id').val();
@@ -154,6 +157,17 @@ $(document).ready(function () {
             let notificationsBadge = $('.notifications-count');
             notificationsBadge.text(notificationsCountUnreadedTabContainer);
 
+        }
+
+        function updateBadge() {
+            let rightSidebarBadge = $('.notifications-count');
+            let profileBadge = $('.notifications-badge');
+
+            let rightSidebarBadgeCount = rightSidebarBadge.text();
+            let profileBadgeCount = profileBadge.text();
+
+            rightSidebarBadge.text(+rightSidebarBadgeCount - 1);
+            profileBadge.text(+profileBadgeCount - 1);
         }
         
         function errorReturned(error) {
