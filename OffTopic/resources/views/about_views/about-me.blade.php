@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    about me page
+    currently working on
 @endsection
