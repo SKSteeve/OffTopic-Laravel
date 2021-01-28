@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Request;
 use App\FriendRequests;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +12,7 @@ class FriendRequestsController extends Controller
      *  Store friend request
      *
      * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store($id)
     {
