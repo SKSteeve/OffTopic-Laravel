@@ -1,4 +1,4 @@
-$('document').ready(function () {
+$(function() {
     //$('.messages-success-error').hide(8000);
 
     setTimeout(function(){

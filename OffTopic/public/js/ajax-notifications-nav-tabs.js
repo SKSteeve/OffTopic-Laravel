@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function() {
 
     var allTab = $('#all-tab');
     var deletedTab = $('#deleted-tab');

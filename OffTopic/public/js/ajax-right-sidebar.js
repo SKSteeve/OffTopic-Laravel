@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function() {
     var secondRowFriends = $('.second-row-tables');
     let base_path = $('#url').val();
     let currentPage = $('#page').val();

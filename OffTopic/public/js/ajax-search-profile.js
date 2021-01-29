@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function() {
 
     var base_path = $("#url").val();
 

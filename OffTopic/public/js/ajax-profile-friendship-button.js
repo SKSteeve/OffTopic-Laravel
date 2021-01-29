@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function() {
     var friendshipBtn = $('.friendship-button');
     var base_path = $("#url").val();
     var id = $('#profile-user-id').val();   // this id is the id on the profile we are at
