@@ -166,8 +166,10 @@ $(function() {
             let rightSidebarBadgeCount = rightSidebarBadge.text();
             let profileBadgeCount = profileBadge.text();
 
-            rightSidebarBadge.text(+rightSidebarBadgeCount - 1);
-            profileBadge.text(+profileBadgeCount - 1);
+            if(+rightSidebarBadgeCount > 0) {
+                rightSidebarBadge.text(+rightSidebarBadgeCount - 1);
+                profileBadge.text(+profileBadgeCount - 1);
+            }
         }
         
         function errorReturned(error) {
