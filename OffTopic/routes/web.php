@@ -18,14 +18,17 @@ Route::get('/', 'HomeController@index');
 Auth::routes();
 
 // Posts Controller
-Route::get('/blog', 'PostsController@index');
-Route::get('/blog/create', 'PostsController@create');
-Route::get('/blog/{id}', 'PostsController@show')->name('blog');
-Route::get('/blog/{id}/edit', 'PostsController@edit');
+Route::group(['prefix' => 'blog'], function () {
+    Route::get('/', 'PostsController@index');
+    Route::get('/create', 'PostsController@create');
+    Route::get('/{id}', 'PostsController@show')->name('blog');
+    Route::get('/{id}/edit', 'PostsController@edit');
 
-Route::delete('/blog/{id}/delete', 'PostsController@destroy');
-Route::post('/blog/store', 'PostsController@store')->name('store');
-Route::put('/blog/{id}/update', 'PostsController@update')->name('update');
+    Route::delete('/{id}/delete', 'PostsController@destroy');
+    Route::post('/store', 'PostsController@store')->name('store');
+    Route::put('/{id}/update', 'PostsController@update')->name('update');
+});
+
 
 // Posts Comments Controller
 Route::post('/blog/{id}/comment/create', 'PostCommentController@store');
@@ -34,12 +37,16 @@ Route::delete('/blog/{postId}/comment/{commentId}/delete', 'PostCommentControlle
 Route::get('/comment/{id}/edit', 'PostCommentController@edit');
 Route::put('/comment/update', 'PostCommentController@update');
 
+
 // User Profile Controller
-Route::get('/users/profile', 'UserProfileController@index'); //show little form to type id or name and get redirected to specific user profile
-Route::get('/users/profile/{id}', 'UserProfileController@show');
-Route::get('/users/profile/{id}/edit', 'UserProfileController@edit');
-Route::post('/users/profile/{id}/update', 'UserProfileController@createOrUpdate');
-Route::delete('/users/profile/{id}/delete', 'UserProfileController@destroy');
+Route::group(['prefix' => 'users/profile'], function() {
+    Route::get('/', 'UserProfileController@index'); //show little form to type id or name and get redirected to specific user profile
+    Route::get('/{id}', 'UserProfileController@show');
+    Route::get('/{id}/edit', 'UserProfileController@edit');
+    Route::post('/{id}/update', 'UserProfileController@createOrUpdate');
+    Route::delete('/{id}/delete', 'UserProfileController@destroy');
+});
+
 
 // Friend Requests Controller
 //  AJAX for create and delete
@@ -47,19 +54,23 @@ Route::get('/friend-request/{id}/create', 'FriendRequestsController@store');
 Route::get('/friend-request/{id}/delete', 'FriendRequestsController@destroy');
 
 
-// Notifications Controller
-Route::get('/users/{id}/notifications', 'NotificationsController@index');
-// AJAX for Clear button and "single delete" button
-Route::get('/users/{id}/notifications/clear', 'NotificationsController@deleteAllNotifications');
-Route::get('/users/{id}/notifications/{notificationId}/delete/{hardOrSoft}', 'NotificationsController@deleteNotificationSoftOrHard');
+// Notifications & Friend List Controllers
+Route::group(['prefix' => '/users'], function() {
+
+    // Notifications Controller
+    Route::get('/{id}/notifications', 'NotificationsController@index');
+    // AJAX for Clear button and "single delete" button
+    Route::get('/{id}/notifications/clear', 'NotificationsController@deleteAllNotifications');
+    Route::get('/{id}/notifications/{notificationId}/delete/{hardOrSoft}', 'NotificationsController@deleteNotificationSoftOrHard');
 
 
-// Friend List Controller
-// AJAX for Unfriend button in profile view
-Route::get('/users/delete-friendship/{userId}/delete', 'FriendListController@deleteFriendshipAndNotifications');
-// AJAX for Accept and Decline buttons in Notification view
-Route::get('/users/accept-friend-request/{requestedUserId}/{senderUserId}', 'FriendListController@store');
-Route::get('/users/decline-friend-request/{requestedUserId}/{senderUserId}', 'FriendListController@deleteFriendRequestAndNotification');
+    // Friend List Controller
+    // AJAX for Unfriend button in profile view
+    Route::get('/delete-friendship/{userId}/delete', 'FriendListController@deleteFriendshipAndNotifications');
+    // AJAX for Accept and Decline buttons in Notification view
+    Route::get('/accept-friend-request/{requestedUserId}/{senderUserId}', 'FriendListController@store');
+    Route::get('/decline-friend-request/{requestedUserId}/{senderUserId}', 'FriendListController@deleteFriendRequestAndNotification');
+});
 
 
 // About Me Controller
